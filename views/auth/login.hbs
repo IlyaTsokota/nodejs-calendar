@@ -1,0 +1,25 @@
+<div class="row mt-5">
+    <div class="col-10 offset-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+        <p class="fs-1">Login</p>
+        {{#if error}}
+        <div class="alert alert-danger" role="alert">
+            {{error}}
+        </div>
+        {{/if}}
+        <form action="/auth/login" method="POST">
+            <input type="hidden" name="_csrf" value="{{ csrf }}" />
+            <div class="mb-3">
+                <label for="login" class="form-label">Login</label>
+                <input type="login" name="login" class="form-control" id="login" value="{{data.login}}">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" id="password" value="{{data.password}}">
+            </div>
+            <div class="mb-3">
+                <a href="/auth/reset" class="btn btn-link">Забыли пароль?</a>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Sign In</button>
+        </form>
+    </div>
+</div>

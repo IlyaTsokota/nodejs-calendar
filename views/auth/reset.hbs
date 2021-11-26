@@ -1,0 +1,18 @@
+<div class="row mt-5">
+    <div class="col-10 offset-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+        <p class="fs-1">Forgot your password?</p>
+        {{#if error}}
+        <div class="alert alert-danger" role="alert">
+            {{error}}
+        </div>
+        {{/if}}
+        <form action="/auth/reset" method="POST">
+            <input type="hidden" name="_csrf" value="{{ csrf }}" />
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" id="email">
+            </div>
+            <button type="submit" class="btn btn-success w-100">Reset</button>
+        </form>
+    </div>
+</div>
