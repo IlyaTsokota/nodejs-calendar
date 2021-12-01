@@ -1,1 +1,99 @@
-<h1>Main page</h1>
+<div class="row mt-5">
+    <h1 class="fs-1">Calendars - {{type}}</h1>
+    <div class="col-12 d-flex justify-content-between">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Create calendar
+        </button>
+
+        <div class="btn-group" role="group">
+            <a href="/calendars/active" class="btn btn-success">Active</a>
+            <a href="/calendars/hide" class="btn btn-warning">Hidden</a>
+            <a href="/calendars/delete" class="btn btn-danger">Deleted</a>
+        </div>
+    </div>
+
+    <div class="col-12 mt-2">
+        <div class="row justify-content-start">
+            {{#if calendars}}
+            {{#each calendars}}
+            <div class="col-12 col-md-4 p-2 mt-3">
+                <a href="/calendar/{{id}}" class="card text-dark text-decoration-none">
+                    <div class="card-body">
+                        <h5 class="card-title">{{name}}</h5>
+                        <p class="card-text">{{desc}}</p>
+                        <div class="d-flex">
+                            <div>Color: {{color}} - </div>
+                            <div style="margin-left: 15px; width: 25px; height: 25px;background-color: {{color}}"></div>
+                        </div>
+                    </div>
+                </a>
+                <div class="dropdown">
+                    <button class="btn w-100 btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        {{#if isAdmin}}
+                        <li><a class="dropdown-item" href="/calendar/edit/{{id}}">Edit</a></li>
+                        <li><a class="dropdown-item" href="/calendar/add-user/{{id}}">Add user</a></li>
+                        {{#ifnot @root.type 'ACTIVE'}}
+                        <li><a class="dropdown-item" data-cr="postLinkBtn" href="/calendar/active/{{id}}"
+                                data-cr-config='{ "_csrf": "{{ @root.csrf }}" }'>Active</a>
+                        </li>
+                        {{/ifnot}}
+                        {{#ifnot @root.type 'HIDE'}}
+                        <li><a class="dropdown-item" data-cr="postLinkBtn" href="/calendar/hide/{{id}}"
+                                data-cr-config='{ "_csrf": "{{ @root.csrf }}" }'>Hide</a></li>
+                        {{/ifnot}}
+                        {{#ifnot @root.type 'DELETE'}}
+                        <li><a class="dropdown-item" data-cr="postLinkBtn" href="/calendar/delete/{{id}}"
+                                data-cr-config='{ "_csrf": "{{ @root.csrf }}" }'>Delete</a>
+                        </li>
+                        {{/ifnot}}
+                        {{/if}}
+
+                    </ul>
+                </div>
+            </div>
+            {{/each}}
+            {{else}}
+            <h2 class="fs-1">No calendars of this type.</h2>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div data-cr="createCalendarForm" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="createCalendar"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCalendar">Create calendar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger d-none" role="alert"></div>
+                <form>
+                    <input type="hidden" name="_csrf" value="{{ csrf }}" />
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Title</label>
+                        <input type="text" name="name" class="form-control" id="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="desc" class="form-label">Description</label>
+                        <input type="text" name="desc" class="form-control" id="desc">
+                    </div>
+                    <div class="mb-3">
+                        <label for="color" class="form-label">Color in HEX</label>
+                        <input type="text" name="color" class="form-control" id="color">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success w-100 create-btn">Create</button>
+            </div>
+        </div>
+    </div>
+</div>

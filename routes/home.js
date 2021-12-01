@@ -1,11 +1,9 @@
 const { Router } = require('express');
+const auth = require('../middleware/auth');
 const router = Router();
 
-router.get('/', (req, resp) => {
-    resp.render('index', {
-        title: 'Главная страница',
-        isMain: true,
-    });
+router.get('/', auth, (req, resp) => {
+    resp.redirect('/calendars/active');
 });
 
 module.exports = router;

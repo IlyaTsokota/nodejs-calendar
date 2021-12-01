@@ -3,19 +3,13 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const { validationResult } = require('express-validator');
-const nodemailer = require('nodemailer');
-const sendgrid = require('nodemailer-sendgrid-transport');
-const config = require('../config');
 const regEmail = require('../emails/registration');
 const resetEmail = require('../emails/reset');
+const transporter = require('../utils/transporter-mailer');
 const { registerValidators, loginValidators } = require('../utils/validators');
+const Calendar = require('../models/calendar');
+const CalendarUser = require('../models/calendarUser');
 const router = Router();
-
-const transporter = nodemailer.createTransport(sendgrid({
-    auth: {
-        'api_key': config.SENDGRID_API,
-    },
-}));
 
 router.get('/login', async(req, resp) => {
     resp.render('auth/login', {
@@ -108,7 +102,22 @@ router.post('/register', registerValidators , async(req, resp) => {
             password: hashPassword,
         });
 
+        const calendar = new Calendar({
+            name: 'Default calendar',
+            desc: "This is default calendar!",
+            color: '#000',
+        });
+
+        const calendarUser = new CalendarUser({
+            calendarId: calendar,
+            userId: user,
+            isAdmin: true,
+        });
+        
         await user.save();
+        await calendar.save();
+        await calendarUser.save();
+
         resp.redirect('/auth/login');
         await transporter.sendMail(regEmail(email));
     } catch (e) {
@@ -188,10 +197,8 @@ router.post('/password', async (req, resp) => {
             resetTokenExp: { $gt: Date.now() },
         });
 
-        console.log(user);
-
         if (!user) {
-            req.flash('loginError', 'Время жизни токена истекло');
+            req.flash('error', 'Token has expired');
             return resp.redirect('/auth/login');
         }
         const newPassword = await bcrypt.hash(password, 10);

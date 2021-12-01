@@ -14,6 +14,8 @@ const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-ac
 const homeRoutes = require('./routes/home');
 const profileRoutes = require('./routes/profile');
 const authRoutes = require('./routes/auth');
+const calendarRoutes = require('./routes/calendar');
+const calendarsRoutes = require('./routes/calendars');
 
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
@@ -59,7 +61,7 @@ app.use(flash());
 app.use(helmet({
     contentSecurityPolicy: false,
 }));
-
+app.use(express.json())
 app.use(compression());
 
 app.use(varMiddleware);
@@ -68,6 +70,8 @@ app.use(userMiddleware);
 app.use('/', homeRoutes);
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
+app.use('/calendar', calendarRoutes);
+app.use('/calendars', calendarsRoutes);
 
 app.use(errorHandler);
 

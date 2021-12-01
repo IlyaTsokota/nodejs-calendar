@@ -6,4 +6,11 @@ module.exports = {
 
         return options.inverse(this);
     },
+    ifnot(a, b, options) {
+        if (a?.toString() !== b?.toString()) {
+            return options.fn(this);
+        }
+
+        return options.inverse(this);
+    },
 };
