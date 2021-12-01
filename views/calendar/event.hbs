@@ -6,13 +6,30 @@
                     <h1>{{event.title}}</h1>
                     <p>Date: {{event.date}}</p>
                     <p>Category: {{event.category}}</p>
-                    <p>{{event.desc}}</p>
+                    <p>Description:<br />{{event.desc}}</p>
                 </div>
                 <div class="col-md-8 ">
                     <div class="card-body p-2">
-                        <h5 class="card-title">Messages:</h5>
+                        <form action="/event/message/add" method="POST">
+                            <input type="hidden" name="_csrf" value="{{ csrf }}" />
+                            <input type="hidden" name="id" value="{{ event._id }}" />
+                            <div class="form-floating">
+                                <textarea class="form-control" name="body" placeholder="Write message..."
+                                    id="floatingTextarea2" style="height: 100px"></textarea>
+                                <label for="floatingTextarea2">Write message...</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 mt-2">Send</button>
+                        </form>
+                        <h5 class="card-title mt-2">Messages:</h5>
                         {{#if messages}}
-
+                        {{#each messages}}
+                        <div class="card p-2 mt-2">
+                            <div class="card-body">
+                                {{body}}
+                            </div>
+                            <h6 class="card-subtitle mt-2 text-muted">{{date}}</h6>
+                        </div>
+                        {{/each}}
                         {{else}}
                         <p>There are no messages</p>
                         {{/if}}
