@@ -1,0 +1,24 @@
+<div class="row mt-5">
+    <div class="col">
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4 p-2 border-end">
+                    <h1>{{event.title}}</h1>
+                    <p>Date: {{event.date}}</p>
+                    <p>Category: {{event.category}}</p>
+                    <p>{{event.desc}}</p>
+                </div>
+                <div class="col-md-8 ">
+                    <div class="card-body p-2">
+                        <h5 class="card-title">Messages:</h5>
+                        {{#if messages}}
+
+                        {{else}}
+                        <p>There are no messages</p>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

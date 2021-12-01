@@ -1,0 +1,52 @@
+<div class="row mt-5" data-cr="datePickerForm"
+    data-cr-config='{ "color": "{{calendar.color}}", "id": "{{calendar._id}}", "_csrf": "{{ @root.csrf }}" }'>
+    <p class="fs-1">Calendar - {{calendar.name}}</p>
+    <div class="col-auto">
+        <button type="button" class="btn btn-primary w-100 btn-add" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            Add event
+        </button>
+        <div class="date-picker"></div>
+    </div>
+    <div class="col">
+        <p class="fs-2">Events:</p>
+        <div class="events"></div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="createCalendar" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createCalendar">Add event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger d-none" role="alert"></div>
+                    <form>
+                        <input type="hidden" name="_csrf" value="{{ csrf }}" />
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" name="title" class="form-control" id="title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="desc" class="form-label">Description</label>
+                            <input type="text" name="desc" class="form-control" id="desc">
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select name="category" class="form-select" aria-label="Default select example"
+                                id="category">
+                                <option value="task" selected>Task</option>
+                                <option value="reminder">Reminder</option>
+                                <option value="arrangement">Arrangement</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success w-100 create-btn">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

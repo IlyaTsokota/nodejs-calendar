@@ -1,0 +1,52 @@
+<div class="row mt-5">
+    <div class="col-10 offset-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+        <p class="fs-1">Edit calendar - {{calendar.name}}</p>
+        {{#if error}}
+        <div class="alert alert-danger" role="alert">
+            {{error}}
+        </div>
+        {{/if}}
+        <form action="/calendar/edit/{{calendar._id}}" method="POST">
+            <input type="hidden" name="_csrf" value="{{ csrf }}" />
+            <div class="mb-3">
+                <label for="name" class="form-label">Title</label>
+                <input type="text" name="name" class="form-control" id="name" value="{{calendar.name}}">
+            </div>
+            <div class="mb-3">
+                <label for="desc" class="form-label">Description</label>
+                <input type="text" name="desc" class="form-control" id="desc" value="{{calendar.desc}}">
+            </div>
+            <div class="mb-3">
+                <label for="color" class="form-label">Color in HEX</label>
+                <input type="text" name="color" class="form-control" id="color" value="{{calendar.color}}">
+            </div>
+            <button type="submit" class="btn btn-success w-100">Edit calendar</button>
+        </form>
+
+        <p class="fs-2">User list</p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Login</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    <td>{{login}}</td>
+                    <td>{{email}}</td>
+                    <td>
+                        <a class="btn btn-danger" data-cr="postLinkBtn"
+                            href="/calendar/{{@root.calendar._id}}/remove-user/{{id}}"
+                            data-cr-config='{ "_csrf": "{{ @root.csrf }}" }'>Remove</a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+    </div>
+</div>

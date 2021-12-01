@@ -4,6 +4,7 @@ const eventSchema = Schema({
     category: {
         type: String,
         require: true,
+        enum: ['arrangement', 'reminder', 'task'],
     },
     title: {
         type: String,

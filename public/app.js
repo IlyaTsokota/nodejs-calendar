@@ -71,10 +71,87 @@ const parseJSON = (str) => {
     return json;
 }
 
+const datePickerForm = (block, data) => {
+    const picker = block.querySelector('.date-picker');
+    const eventsBlock = block.querySelector('.events');
+    const addBtn = block.querySelector('.btn-add');
+    const modal = block.querySelector('.modal');
+    const form = modal.querySelector('form');
+    const submitBtn = modal.querySelector('.btn-success');
+    const alert =  modal.querySelector('.alert');
+    const closeModalBtn =  modal.querySelector('.btn-close');
+
+    const datepicker = new Datepicker(picker); 
+    datepicker.setDate(Date.now());
+
+    const getDayEvents = () => {
+        postData('/calendar/events', { 
+            date: datepicker.getDate(),
+            ...data,
+        }).then((resp) => {
+            
+            if (resp) {
+                let content = `<ul class="list-group w-100">`;
+
+                resp.forEach(({ title, category, id} ) => {
+                    content += `
+                    <li class="list-group-item w-100" style="background-color: ${data.color};">
+                        <a style="color: ${data.color};filter: invert(100%);" href="/event/${id}" class="d-block  w-100 text-dark text-decoration-none">
+                            ${title} - ${category.toUpperCase()}
+                        </a>
+                    </li>`
+                })
+                content += '</ul>'
+
+                eventsBlock.innerHTML = content;
+            } else {
+                eventsBlock.innerHTML = "<h3>There are no events on this day</h3>";
+            }
+        });        
+    };
+
+    const addEvent = () => {
+        submitBtn.addEventListener('click', () => {
+            const formData = Object.fromEntries(new FormData(form).entries());
+            submitBtn.disabled = true;
+            const dataEvent = {
+                ...formData,
+                date: datepicker.getDate(),
+                calendarId: data.id,
+            };
+
+            postData('/event/add', dataEvent)
+                .then((resp) => {
+                    if (resp && resp.error) {
+                        alert.textContent = resp.error; 
+                        alert.classList.remove('d-none');
+                    } else {
+                        trigger(closeModalBtn, 'click');
+                        getDayEvents();
+                    }
+                }).finally(() => {
+                    submitBtn.disabled = false;
+                });
+        });
+    };
+
+    addBtn.addEventListener('click', () => {
+        alert.classList.add('d-none');
+    });
+
+    picker.addEventListener('changeDate', (e) => {
+        getDayEvents();
+    });
+
+    getDayEvents();
+    addEvent();
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const components = {
         createCalendarForm,
         postLinkBtn,
+        datePickerForm,
     };
 
 

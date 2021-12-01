@@ -16,6 +16,7 @@ const profileRoutes = require('./routes/profile');
 const authRoutes = require('./routes/auth');
 const calendarRoutes = require('./routes/calendar');
 const calendarsRoutes = require('./routes/calendars');
+const eventRoutes = require('./routes/event');
 
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
@@ -72,6 +73,7 @@ app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
 app.use('/calendar', calendarRoutes);
 app.use('/calendars', calendarsRoutes);
+app.use('/event', eventRoutes);
 
 app.use(errorHandler);
 

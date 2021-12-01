@@ -28,13 +28,14 @@
                         </div>
                     </div>
                 </a>
+                {{#if isAdmin}}
+
                 <div class="dropdown">
                     <button class="btn w-100 btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Actions
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        {{#if isAdmin}}
                         <li><a class="dropdown-item" href="/calendar/edit/{{id}}">Edit</a></li>
                         <li><a class="dropdown-item" href="/calendar/add-user/{{id}}">Add user</a></li>
                         {{#ifnot @root.type 'ACTIVE'}}
@@ -51,10 +52,11 @@
                                 data-cr-config='{ "_csrf": "{{ @root.csrf }}" }'>Delete</a>
                         </li>
                         {{/ifnot}}
-                        {{/if}}
 
                     </ul>
                 </div>
+                {{/if}}
+
             </div>
             {{/each}}
             {{else}}
