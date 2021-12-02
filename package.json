@@ -7,7 +7,7 @@
         "start": "node index.js",
         "dev": "nodemon index.js"
     },
-    "author": "Tsokota Ilya <ilya.tsokota@gmail.com>",
+    "author": "",
     "license": "ISC",
     "dependencies": {
         "@handlebars/allow-prototype-access": "^1.0.5",
